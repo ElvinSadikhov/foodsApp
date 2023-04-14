@@ -2,6 +2,7 @@ package com.example.foodsapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -25,6 +26,10 @@ class MainActivity : AppCompatActivity() {
     private fun setupBottomNavBar() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         NavigationUI.setupWithNavController(binding.bottomNavBar, navHostFragment.navController)   // we need to have same ids for fragments(nav file) and menu items(menu file)
+    }
+
+    fun showBottomNavBar() {
+        binding.bottomNavBar.visibility = View.VISIBLE
     }
 
 }

@@ -19,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -36,14 +37,16 @@ class SignInFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setupFirebase()
         checkForAuthorizedUser()
         binding.btnSignIn.setOnClickListener {
             signInWithGoogle()
         }
-
-        return binding.root
     }
 
     private fun setupFirebase() {
@@ -92,6 +95,10 @@ class SignInFragment : Fragment() {
         }
     }
 
-    private fun navigateToHomeTab() = view?.findNavController()?.navigate(R.id.signInToHomeTab)
+    private fun navigateToHomeTab()  {
+        Log.d("t", "here")
+        (activity as MainActivity).showBottomNavBar()
+        requireView().findNavController().navigate(R.id.signInToHomeTab)
+    }
 
 }
