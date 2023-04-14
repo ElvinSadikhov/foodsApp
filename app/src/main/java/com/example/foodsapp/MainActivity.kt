@@ -1,22 +1,30 @@
 package com.example.foodsapp
 
-import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestBuilder
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import com.example.foodsapp.databinding.ActivityMainBinding
+import com.example.foodsapp.ui.fragment.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
-//        var url = "http://kasimadalan.pe.hu/foods/images/$imageName"
-//        Glide.with(this)
-//            .load(url)
-//            .override(300, 300)
-//            .into(binding.imageView)
+        setupBottomNavBar()
+
+        setContentView(binding.root)
     }
+
+    private fun setupBottomNavBar() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+        NavigationUI.setupWithNavController(binding.bottomNavBar, navHostFragment.navController)   // we need to have same ids for fragments(nav file) and menu items(menu file)
+    }
+
 }

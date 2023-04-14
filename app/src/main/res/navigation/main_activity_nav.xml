@@ -9,5 +9,37 @@
         android:id="@+id/signInFragment"
         android:name="com.example.foodsapp.ui.fragment.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" />
+        tools:layout="@layout/fragment_sign_in" >
+        <action
+            android:id="@+id/signInToHomeTab"
+            app:destination="@id/homeTabFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeTabFragment"
+        android:name="com.example.foodsapp.ui.fragment.HomeTabFragment"
+        android:label="fragment_home_tab"
+        tools:layout="@layout/fragment_home_tab" >
+        <action
+            android:id="@+id/homeTabToFoodDetails"
+            app:destination="@id/foodDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cartTabFragment"
+        android:name="com.example.foodsapp.ui.fragment.CartTabFragment"
+        android:label="fragment_cart_tab"
+        tools:layout="@layout/fragment_cart_tab" />
+    <fragment
+        android:id="@+id/profileTabFragment"
+        android:name="com.example.foodsapp.ui.fragment.ProfileTabFragment"
+        android:label="fragment_profile_tab"
+        tools:layout="@layout/fragment_profile_tab" />
+    <fragment
+        android:id="@+id/foodDetailFragment"
+        android:name="com.example.foodsapp.ui.fragment.FoodDetailFragment"
+        android:label="fragment_food_detail"
+        tools:layout="@layout/fragment_food_detail" >
+        <action
+            android:id="@+id/foodDetailToCartTab"
+            app:destination="@id/cartTabFragment" />
+    </fragment>
 </navigation>

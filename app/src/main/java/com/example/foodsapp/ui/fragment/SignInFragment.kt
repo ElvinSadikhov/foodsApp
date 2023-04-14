@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.example.foodsapp.BuildConfig
 import com.example.foodsapp.MainActivity
 import com.example.foodsapp.R
@@ -23,7 +23,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignInFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
     private lateinit var launcher: ActivityResultLauncher<Intent>
@@ -34,17 +36,14 @@ class SignInFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         setupFirebase()
         checkForAuthorizedUser()
-
         binding.btnSignIn.setOnClickListener {
             signInWithGoogle()
         }
+
+        return binding.root
     }
 
     private fun setupFirebase() {
@@ -79,11 +78,9 @@ class SignInFragment : Fragment() {
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener {
+            Log.d(LogTags.auth, "Google signIn -> ${if(it.isSuccessful) "success" else "fail"}")
             if(it.isSuccessful) {
-                Log.d(LogTags.auth, "Google signIn -> success")
-                navigateToMain()
-            } else {
-                Log.d(LogTags.auth, "Google signIn -> fail")
+                navigateToHomeTab()
             }
         }
     }
@@ -91,13 +88,10 @@ class SignInFragment : Fragment() {
     private fun checkForAuthorizedUser() {
         if(auth.currentUser != null) {
             Log.d(LogTags.auth, "User is signed in")
-            navigateToMain()
+            navigateToHomeTab()
         }
     }
 
-    private fun navigateToMain() {
-//        val intent = Intent(requireContext(), MainActivity::class.java)
-//        startActivity(intent)
-    }
+    private fun navigateToHomeTab() = view?.findNavController()?.navigate(R.id.signInToHomeTab)
 
 }
