@@ -12,14 +12,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.findNavController
 import com.example.foodsapp.BuildConfig
 import com.example.foodsapp.MainActivity
-import com.example.foodsapp.R
 import com.example.foodsapp.consts.LogTags
 import com.example.foodsapp.databinding.FragmentSignInBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -37,6 +35,7 @@ class SignInFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
+        binding.signInFragment = this
         return binding.root
     }
 
@@ -44,9 +43,6 @@ class SignInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupFirebase()
         checkForAuthorizedUser()
-        binding.btnSignIn.setOnClickListener {
-            signInWithGoogle()
-        }
     }
 
     private fun setupFirebase() {
@@ -73,7 +69,7 @@ class SignInFragment : Fragment() {
         return GoogleSignIn.getClient(activity as MainActivity, options)
     }
 
-    private fun signInWithGoogle() {
+    fun signInWithGoogle() {
         val signInClient = getClient()
         launcher.launch(signInClient.signInIntent)
     }
@@ -98,7 +94,7 @@ class SignInFragment : Fragment() {
     private fun navigateToHomeTab()  {
         Log.d("t", "here")
         (activity as MainActivity).showBottomNavBar()
-        requireView().findNavController().navigate(R.id.signInToHomeTab)
+        requireView().findNavController().navigate(SignInFragmentDirections.signInToHomeTab())  // or R.id.signInToHomeTab
     }
 
 }

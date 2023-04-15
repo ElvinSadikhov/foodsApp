@@ -1,9 +1,11 @@
 package com.example.foodsapp.di
 
+import com.example.foodsapp.data.datasource.FoodItemDatasource
+import com.example.foodsapp.data.repo.FoodItemRepo
 import com.example.foodsapp.retrofit.ApiUtils
-import com.example.foodsapp.retrofit.dao.CartDAO
-import com.example.foodsapp.retrofit.dao.FoodDAO
+import com.example.foodsapp.retrofit.dao.FoodItemDAO
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -12,16 +14,22 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
-//    @Provides
+    @Provides
     @Singleton
-    fun provideFoodDAO(): FoodDAO {
+    fun provideFoodDAO(): FoodItemDAO {
         return ApiUtils.getFoodDAO()
     }
 
-//    @Provides
+    @Provides
     @Singleton
-    fun provideCartDAO(): CartDAO {
-        return ApiUtils.getCartDAO()
+    fun provideFoodItemDatasource(foodItemDAO: FoodItemDAO): FoodItemDatasource {
+        return FoodItemDatasource(foodItemDAO)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFoodItemRepo(foodItemDatasource: FoodItemDatasource): FoodItemRepo {
+        return FoodItemRepo(foodItemDatasource)
     }
 
 }

@@ -6,6 +6,6 @@ data class FoodItem(
     val id: Int,
     val name: String,
     val image: String,
-    val price: Int,
+    val price: Double,
     val category: String
 ): Serializable
