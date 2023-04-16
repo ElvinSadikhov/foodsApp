@@ -2,6 +2,7 @@ package com.example.foodsapp.util
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.navigation.NavDirections
@@ -16,6 +17,12 @@ import com.example.foodsapp.consts.ApiConsts.BASE_URL
 import com.example.foodsapp.retrofit.RetrofitClient
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import okhttp3.Interceptor
+import okhttp3.Response
+import okhttp3.ResponseBody
+import retrofit2.Converter
+import retrofit2.Retrofit
+import java.lang.reflect.Type
 
 fun Navigation.go(view: View, direction: NavDirections) {
     findNavController(view).navigate(direction)
@@ -63,3 +70,17 @@ inline fun <I, reified O> I.convert(): O {
     val json = gson.toJson(this)
     return gson.fromJson(json, object : TypeToken<O>() {}.type)
 }
+
+//class LoggingInterceptor : Interceptor {
+//    override fun intercept(chain: Interceptor.Chain): Response {
+//        val request = chain.request()
+//        val response = chain.proceed(request)
+//
+//        // Log the response body
+//        val responseBody = response.peekBody(Long.MAX_VALUE)
+//
+//        Log.d("LoggingInterceptor", "Response: ${responseBody.string()}")
+//
+//        return response
+//    }
+//}

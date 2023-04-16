@@ -2,19 +2,15 @@ package com.example.foodsapp.ui.adapter
 
 import android.content.Context
 import android.view.*
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodsapp.data.entity.CartItem
-import com.example.foodsapp.data.entity.FoodItem
 import com.example.foodsapp.databinding.CartItemDesignBinding
-import com.example.foodsapp.ui.fragment.CartTabFragmentDirections
-import com.example.foodsapp.ui.fragment.FoodItemDetailFragmentDirections
-import com.example.foodsapp.ui.fragment.HomeTabFragmentDirections
-import com.example.foodsapp.util.go
+import com.example.foodsapp.ui.viewmodel.CartViewModel
 import com.example.foodsapp.util.fill
+import com.google.android.material.snackbar.Snackbar
 
 
-class CartItemAdapter(var mContext: Context, var cartItemList: List<CartItem>): RecyclerView.Adapter<CartItemAdapter.CardDesignHolder>() {
+class CartItemAdapter(private val mContext: Context, private val cartItemList: List<CartItem>, private val viewModel: CartViewModel): RecyclerView.Adapter<CartItemAdapter.CardDesignHolder>() {
 
     inner class CardDesignHolder(var binding: CartItemDesignBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -49,8 +45,11 @@ class CartItemAdapter(var mContext: Context, var cartItemList: List<CartItem>): 
         binding.counterLayout.counterTv.text = cartItem.orderAmount.toString()
     }
 
-    fun onDeleteIconClick(cartItem: CartItem) {
-        TODO("implement")
+    fun onDeleteIconClick(view: View, cartItem: CartItem) {
+        Snackbar.make(mContext, view, "Are you sure you want to delete ${cartItem.name} from cart?", Snackbar.LENGTH_SHORT)
+            .setAction("Yes") {
+                viewModel.deleteFromCart(cartItem)
+            }.show()
     }
 
 }

@@ -13,7 +13,7 @@ import com.example.foodsapp.util.go
 import com.example.foodsapp.util.fill
 
 
-class FoodItemAdapter(var mContext: Context, var foodItemList: List<FoodItem>): RecyclerView.Adapter<FoodItemAdapter.CardDesignHolder>() {
+class FoodItemAdapter(private val mContext: Context, private val foodItemList: List<FoodItem>): RecyclerView.Adapter<FoodItemAdapter.CardDesignHolder>() {
 
     inner class CardDesignHolder(var binding: FoodItemDesignBinding): RecyclerView.ViewHolder(binding.root)
 

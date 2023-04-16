@@ -1,6 +1,5 @@
 package com.example.foodsapp.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.foodsapp.service.AuthService
@@ -11,8 +10,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Locale.filter
-import java.util.function.Predicate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,6 +17,14 @@ class CartViewModel @Inject constructor(private val cartRepo: CartRepo, private 
     val cartItemList = MutableLiveData<List<CartItem>>()
 
     fun init() {
+        // there is a huge problem with backend response, so I needed to do a work around
+        CoroutineScope(Dispatchers.Main).launch {
+            val success = cartRepo.addToCart(FoodItem(5, "Pasta", "pasta.png", 6.0, "Meals"), 1, authService.getUserId()!!)
+            if (success) {
+                val cartItems = cartRepo.loadCartItems(authService.getUserId()!!)
+                cartRepo.deleteFromCart(cartItems[0].cartId, authService.getUserId()!!)
+            }
+        }
         loadCartItems()
     }
 
@@ -32,8 +37,20 @@ class CartViewModel @Inject constructor(private val cartRepo: CartRepo, private 
     fun addToCart(foodItem: FoodItem, amount: Int) {
         CoroutineScope(Dispatchers.Main).launch {
             val success = cartRepo.addToCart(foodItem, amount, authService.getUserId()!!)
+            if (success)    loadCartItems()
+        }
+    }
+
+    fun deleteFromCart(cartItem: CartItem) {
+        CoroutineScope(Dispatchers.Main).launch {
+            val success = cartRepo.deleteFromCart(cartItem.cartId, authService.getUserId()!!)
             if (success) {
-                loadCartItems()
+                // there is a huge problem with backend response, so I needed to do a work around
+                if (cartItemList.value?.size != 1) {
+                    loadCartItems()
+                } else {
+                    cartItemList.value = listOf()
+                }
             }
         }
     }

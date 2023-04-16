@@ -36,7 +36,7 @@
 
                 <ImageView
                     android:id="@+id/deleteIcon"
-                    android:onClick="@{() -> cartItemAdapter.onDeleteIconClick(cartItem)}"
+                    android:onClick="@{() -> cartItemAdapter.onDeleteIconClick(deleteIcon, cartItem)}"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="8dp"

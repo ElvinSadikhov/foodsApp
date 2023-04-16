@@ -9,7 +9,7 @@ class FoodItemDatasource(var foodItemDAO: FoodItemDAO) {
 
     suspend fun loadFoodItems(): List<FoodItem> =
         withContext(Dispatchers.IO) {
-            foodItemDAO.loadFoodItems().foods
+            foodItemDAO.loadFoodItems().foods ?: listOf()
         }
 
 }

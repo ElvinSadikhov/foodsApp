@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import com.example.foodsapp.R
 import com.example.foodsapp.databinding.FragmentCartTabBinding
-import com.example.foodsapp.databinding.FragmentProfileTabBinding
 import com.example.foodsapp.ui.adapter.CartItemAdapter
 import com.example.foodsapp.ui.viewmodel.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +20,7 @@ class CartTabFragment : Fragment() {
         binding = FragmentCartTabBinding.inflate(inflater, container, false)
 
         viewModel.cartItemList.observe(viewLifecycleOwner) {
-            binding.rcAdapter = CartItemAdapter(requireContext(), it)
+            binding.rcAdapter = CartItemAdapter(requireContext(), it, viewModel)
         }
 
         return binding.root
