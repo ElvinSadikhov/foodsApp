@@ -1,39 +1,25 @@
 package com.example.foodsapp.ui.fragment
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.navigation.findNavController
-import com.example.foodsapp.BuildConfig
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import com.example.foodsapp.MainActivity
-import com.example.foodsapp.consts.LogTags
 import com.example.foodsapp.databinding.FragmentSignInBinding
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.example.foodsapp.ui.viewmodel.SignInViewModel
+import com.example.foodsapp.util.go
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SignInFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
-    private lateinit var launcher: ActivityResultLauncher<Intent>
-    private lateinit var auth: FirebaseAuth
+    private val viewModel: SignInViewModel by activityViewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
         binding.signInFragment = this
         return binding.root
@@ -41,60 +27,17 @@ class SignInFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupFirebase()
-        checkForAuthorizedUser()
+        viewModel.setupFirebase(requireParentFragment(), ::proceed)
+        viewModel.checkForAuthorizedUser(::proceed)
     }
 
-    private fun setupFirebase() {
-        auth = Firebase.auth
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
-            try {
-                val account = task.getResult(ApiException::class.java)
-                if(account != null) {
-                    firebaseAuthWithGoogle(account.idToken!!)
-                }
-            } catch (e: ApiException) {
-                Log.e(LogTags.auth, "Api exception: ${e.message}")
-            }
-        }
-    }
-
-    private fun getClient() : GoogleSignInClient {
-        val options = GoogleSignInOptions
-            .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(BuildConfig.FIREBASE_AUTH_WEB_CLIENT_ID)
-            .requestEmail()
-            .build()
-        return GoogleSignIn.getClient(activity as MainActivity, options)
-    }
-
-    fun signInWithGoogle() {
-        val signInClient = getClient()
-        launcher.launch(signInClient.signInIntent)
-    }
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential).addOnCompleteListener {
-            Log.d(LogTags.auth, "Google signIn -> ${if(it.isSuccessful) "success" else "fail"}")
-            if(it.isSuccessful) {
-                navigateToHomeTab()
-            }
-        }
-    }
-
-    private fun checkForAuthorizedUser() {
-        if(auth.currentUser != null) {
-            Log.d(LogTags.auth, "User is signed in")
-            navigateToHomeTab()
-        }
-    }
-
-    private fun navigateToHomeTab()  {
-        Log.d("t", "here")
+    private fun proceed()  {
         (activity as MainActivity).showBottomNavBar()
-        requireView().findNavController().navigate(SignInFragmentDirections.signInToHomeTab())  // or R.id.signInToHomeTab
+        Navigation.go(requireView(), SignInFragmentDirections.signInToHomeTab())
+    }
+
+    fun onSignInBtnClick() {
+        viewModel.signInWithGoogle(activity as MainActivity)
     }
 
 }

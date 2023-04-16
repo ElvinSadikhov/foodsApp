@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FoodItemViewModel @Inject constructor(var foodItemRepo: FoodItemRepo): ViewModel() {
+class FoodItemViewModel @Inject constructor(private val foodItemRepo: FoodItemRepo): ViewModel() {
     var foodItemList = MutableLiveData<List<FoodItem>>()
 
     init {

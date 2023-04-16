@@ -1,24 +1,19 @@
 package com.example.foodsapp.ui.adapter
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.view.*
+import androidx.cardview.widget.CardView
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
-import com.example.foodsapp.consts.ApiConsts.BASE_IMAGE_URL
 import com.example.foodsapp.data.entity.FoodItem
 import com.example.foodsapp.databinding.FoodItemDesignBinding
 import com.example.foodsapp.ui.fragment.HomeTabFragmentDirections
 import com.example.foodsapp.ui.viewmodel.FoodItemViewModel
 import com.example.foodsapp.util.go
+import com.example.foodsapp.util.fill
 
 
-class FoodItemAdapter(var mContext: Context, var foodItemList: List<FoodItem>, var viewModel: FoodItemViewModel): RecyclerView.Adapter<FoodItemAdapter.CardDesignHolder>() {
+class FoodItemAdapter(var mContext: Context, var foodItemList: List<FoodItem>): RecyclerView.Adapter<FoodItemAdapter.CardDesignHolder>() {
 
     inner class CardDesignHolder(var binding: FoodItemDesignBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -38,24 +33,22 @@ class FoodItemAdapter(var mContext: Context, var foodItemList: List<FoodItem>, v
         binding.foodItemAdapter = this
 
         val imageSize = (mContext.resources.displayMetrics.widthPixels / 2.7).toInt()
-        Glide.with(mContext)
-            .load("$BASE_IMAGE_URL${foodItem.image}")
-            .override(imageSize, imageSize)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                    binding.imageProgressBar.visibility = View.GONE
-                    return false
-                }
-                override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                    binding.imageProgressBar.visibility = View.GONE
-                    return false
-                }
-            })
-            .into(binding.foodItemImageView)
+        binding.foodItemImageView.fill(
+            mContext,
+            foodItem.image,
+            imageSize,
+            onFail = {
+                binding.imageProgressBar.visibility = View.GONE
+                binding.errorImage.visibility = View.VISIBLE
+            },
+            onSuccess = {
+                binding.imageProgressBar.visibility = View.GONE
+            },
+        )
     }
 
-    fun onCardClick(view: View) {
-        Navigation.go(view, HomeTabFragmentDirections.homeTabToFoodDetails())
+    fun onCardClick(view: View, foodItem: FoodItem) {
+        Navigation.go(view, HomeTabFragmentDirections.homeTabToFoodDetails(foodItem))
     }
 
 }

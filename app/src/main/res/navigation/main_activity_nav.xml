@@ -35,11 +35,14 @@
         tools:layout="@layout/fragment_profile_tab" />
     <fragment
         android:id="@+id/foodDetailFragment"
-        android:name="com.example.foodsapp.ui.fragment.FoodDetailFragment"
+        android:name="com.example.foodsapp.ui.fragment.FoodItemDetailFragment"
         android:label="fragment_food_detail"
-        tools:layout="@layout/fragment_food_detail" >
+        tools:layout="@layout/fragment_food_item_detail" >
         <action
             android:id="@+id/foodDetailToCartTab"
             app:destination="@id/cartTabFragment" />
+        <argument
+            android:name="foodItem"
+            app:argType="com.example.foodsapp.data.entity.FoodItem" />
     </fragment>
 </navigation>
