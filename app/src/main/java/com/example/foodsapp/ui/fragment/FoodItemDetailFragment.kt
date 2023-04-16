@@ -47,9 +47,11 @@ class FoodItemDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val isInCart = viewModel.isInCart(bundle.foodItem)
-        binding.addToCartLayer.visibility = if (isInCart) View.GONE else View.VISIBLE
-        binding.viewInCartLayer.visibility = if (isInCart) View.VISIBLE else View.GONE
+        viewModel.cartItemList.observe(viewLifecycleOwner) {
+            val isInCart = viewModel.isInCart(bundle.foodItem)
+            binding.addToCartLayer.visibility = if (isInCart) View.GONE else View.VISIBLE
+            binding.viewInCartLayer.visibility = if (isInCart) View.VISIBLE else View.GONE
+        }
     }
 
     fun onAddToCartBtnClick() {

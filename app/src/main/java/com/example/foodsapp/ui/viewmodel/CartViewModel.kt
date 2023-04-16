@@ -20,23 +20,16 @@ class CartViewModel @Inject constructor(private val cartRepo: CartRepo, private 
     fun init() {
         //! there is a huge problem with backend response, so I needed to do a work around
         CoroutineScope(Dispatchers.Main).launch {
-            var isEmpty = false
             val success = cartRepo.addToCart(FoodItem(5, "Pasta", "pasta.png", 6.0, "Meals"), 999, authService.getUserId()!!)
             if (success) {
                 val cartItems = cartRepo.loadCartItems(authService.getUserId()!!)
-                isEmpty = (cartItems.size - 1) == 0
-                if (!isEmpty) {
-                    loadCartItems()
-                    cartRepo.deleteFromCart(cartItems.stream()
-                        .filter {
-                            it.orderAmount == 999
-                        }.findFirst().get().cartId, authService.getUserId()!!)
-                } else {
-                    cartItemList.value = listOf()
-                }
+                loadCartItems()
+                cartRepo.deleteFromCart(cartItems.stream()
+                    .filter {
+                        it.orderAmount == 999
+                    }.findFirst().get().cartId, authService.getUserId()!!)
             }
         }
-
     }
 
     private fun loadCartItems() {
