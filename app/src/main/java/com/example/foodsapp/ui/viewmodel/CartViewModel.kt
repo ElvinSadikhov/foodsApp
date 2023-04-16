@@ -17,11 +17,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(private val cartRepo: CartRepo, private val authService: AuthService): ViewModel() {
-    private val cartItemList = MutableLiveData<List<CartItem>>()
+    val cartItemList = MutableLiveData<List<CartItem>>()
 
     fun init() {
-//        cartItemList.value = listOf()
-        Log.d("d","here")
         loadCartItems()
     }
 
@@ -35,7 +33,6 @@ class CartViewModel @Inject constructor(private val cartRepo: CartRepo, private 
         CoroutineScope(Dispatchers.Main).launch {
             val success = cartRepo.addToCart(foodItem, amount, authService.getUserId()!!)
             if (success) {
-                Log.d("s", "here")
                 loadCartItems()
             }
         }
@@ -45,11 +42,9 @@ class CartViewModel @Inject constructor(private val cartRepo: CartRepo, private 
         val count = cartItemList.value
             ?.stream()
             ?.filter {
-                Log.d("s", "${it.name} ${foodItem.name}")
                 it.name == foodItem.name
             }
             ?.count()
-        Log.d("s", count.toString())
         return count != null && count > 0
     }
 

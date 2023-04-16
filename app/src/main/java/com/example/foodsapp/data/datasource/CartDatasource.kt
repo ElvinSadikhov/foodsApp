@@ -13,19 +13,13 @@ class CartDatasource(var cartDAO: CartDAO) {
 
     suspend fun loadCartItems(userName: String): List<CartItem> =
         withContext(Dispatchers.IO) {
-            Log.d("s", "${LoadCartItemsDTO(userName).serializeToMap()}")
-            val res =
-                cartDAO.loadCartItems(LoadCartItemsDTO(userName).serializeToMap()).foods_cart
-            Log.d("s", "$res")
-            return@withContext res
+            cartDAO.loadCartItems(LoadCartItemsDTO(userName).serializeToMap()).foods_cart
         }
 
     suspend fun addToCart(addToCartDTO: AddToCartDTO): Boolean =
         withContext(Dispatchers.IO) {
             val res = cartDAO.addToCart(addToCartDTO.serializeToMap())
             val statusCode = res.success
-            Log.d("s", "${addToCartDTO.serializeToMap()}")
-            Log.d("s", "$res.success $res.message")
             statusCode == 1
         }
 

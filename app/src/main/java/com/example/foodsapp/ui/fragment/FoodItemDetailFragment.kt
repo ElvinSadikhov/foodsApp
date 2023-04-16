@@ -29,15 +29,15 @@ class FoodItemDetailFragment : Fragment() {
 
         binding.foodItemDetailFragment = this
         binding.foodItem = bundle.foodItem
-        binding.foodItemImageView.fill(
+        binding.imageHolder.imageView.fill(
             requireContext(),
             bundle.foodItem.image,
             onFail = {
-                binding.imageProgressBar.visibility = View.GONE
-                binding.errorImage.visibility = View.VISIBLE
+                binding.imageHolder.progressBar.visibility = View.GONE
+                binding.imageHolder.errorIcon.visibility = View.VISIBLE
             },
             onSuccess = {
-                binding.imageProgressBar.visibility = View.GONE
+                binding.imageHolder.progressBar.visibility = View.GONE
             },
         )
 

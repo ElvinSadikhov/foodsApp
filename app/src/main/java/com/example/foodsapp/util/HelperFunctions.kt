@@ -25,13 +25,7 @@ inline fun <reified T> getDAO(): T {
     return RetrofitClient.getClient(BASE_URL).create(T::class.java)
 }
 
-fun ImageView.fill(
-    context: Context,
-    foodItemImage: String,
-    imageSize: Int? = 0,
-    onFail: (() -> Unit)?,
-    onSuccess: (() -> Unit)?,
-) {
+fun ImageView.fill(context: Context, foodItemImage: String, imageSize: Int? = 0, onFail: (() -> Unit)?, onSuccess: (() -> Unit)?, ) {
     var rqBuilder = Glide.with(context)
         .load("${ApiConsts.BASE_IMAGE_URL}$foodItemImage")
         .listener(object : RequestListener<Drawable> {
