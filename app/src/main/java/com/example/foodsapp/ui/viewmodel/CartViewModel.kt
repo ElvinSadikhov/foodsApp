@@ -11,26 +11,41 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.streams.toList
 
 @HiltViewModel
 class CartViewModel @Inject constructor(private val cartRepo: CartRepo, private val authService: AuthService): ViewModel() {
     val cartItemList = MutableLiveData<List<CartItem>>()
 
     fun init() {
-        // there is a huge problem with backend response, so I needed to do a work around
+        //! there is a huge problem with backend response, so I needed to do a work around
         CoroutineScope(Dispatchers.Main).launch {
-            val success = cartRepo.addToCart(FoodItem(5, "Pasta", "pasta.png", 6.0, "Meals"), 1, authService.getUserId()!!)
+            var isEmpty = false
+            val success = cartRepo.addToCart(FoodItem(5, "Pasta", "pasta.png", 6.0, "Meals"), 999, authService.getUserId()!!)
             if (success) {
                 val cartItems = cartRepo.loadCartItems(authService.getUserId()!!)
-                cartRepo.deleteFromCart(cartItems[0].cartId, authService.getUserId()!!)
+                isEmpty = (cartItems.size - 1) == 0
+                if (!isEmpty) {
+                    loadCartItems()
+                    cartRepo.deleteFromCart(cartItems.stream()
+                        .filter {
+                            it.orderAmount == 999
+                        }.findFirst().get().cartId, authService.getUserId()!!)
+                } else {
+                    cartItemList.value = listOf()
+                }
             }
         }
-        loadCartItems()
+
     }
 
     private fun loadCartItems() {
         CoroutineScope(Dispatchers.Main).launch {
-            cartItemList.value = cartRepo.loadCartItems(authService.getUserId()!!)
+            //! there is a huge problem with backend response, so I needed to do a work around
+            cartItemList.value = cartRepo.loadCartItems(authService.getUserId()!!).stream()
+                .filter {
+                    it.orderAmount != 999
+                }.toList()
         }
     }
 
@@ -45,7 +60,7 @@ class CartViewModel @Inject constructor(private val cartRepo: CartRepo, private 
         CoroutineScope(Dispatchers.Main).launch {
             val success = cartRepo.deleteFromCart(cartItem.cartId, authService.getUserId()!!)
             if (success) {
-                // there is a huge problem with backend response, so I needed to do a work around
+                //! there is a huge problem with backend response, so I needed to do a work around
                 if (cartItemList.value?.size != 1) {
                     loadCartItems()
                 } else {

@@ -13,7 +13,7 @@ interface CartDAO {
     @POST("/foods/getFoodsCart.php")
     @FormUrlEncoded
     @JvmSuppressWildcards
-    suspend fun loadCartItems(@FieldMap map: Map<String, Any>): CartItemListResponse?
+    suspend fun loadCartItems(@FieldMap map: Map<String, Any>): CartItemListResponse
 
     @POST("/foods/insertFood.php")
     @FormUrlEncoded
