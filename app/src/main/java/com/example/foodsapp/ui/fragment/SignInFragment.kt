@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.example.foodsapp.MainActivity
 import com.example.foodsapp.databinding.FragmentSignInBinding
+import com.example.foodsapp.ui.viewmodel.CartViewModel
 import com.example.foodsapp.ui.viewmodel.SignInViewModel
 import com.example.foodsapp.util.go
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,7 +18,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class SignInFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
-    private val viewModel: SignInViewModel by activityViewModels()
+    private val signInViewModel: SignInViewModel by activityViewModels()
+    private val cartViewModel: CartViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
@@ -27,17 +29,18 @@ class SignInFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.setupFirebase(requireParentFragment(), ::proceed)
-        viewModel.checkForAuthorizedUser(::proceed)
+        signInViewModel.setupFirebase(requireParentFragment(), ::proceed)
+        signInViewModel.checkForAuthorizedUser(::proceed)
     }
 
     private fun proceed()  {
+        cartViewModel.init()
         (activity as MainActivity).showBottomNavBar()
         Navigation.go(requireView(), SignInFragmentDirections.signInToHomeTab())
     }
 
     fun onSignInBtnClick() {
-        viewModel.signInWithGoogle(activity as MainActivity)
+        signInViewModel.signInWithGoogle(activity as MainActivity)
     }
 
 }
