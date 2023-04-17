@@ -42,7 +42,6 @@ class CartItemAdapter(private val mContext: Context, private val cartItemList: L
                 binding.imageHolder.progressBar.visibility = View.GONE
             },
         )
-        binding.counterLayout.counterTv.text = cartItem.orderAmount.toString()
     }
 
     fun onDeleteIconClick(view: View, cartItem: CartItem) {

@@ -2,4 +2,5 @@
     <string name="app_name">FoodsApp</string>
 
     <string name="priceInManats">%s \u20BC</string>
+    <string name="orderAmount">Amount: %s</string>
 </resources>
