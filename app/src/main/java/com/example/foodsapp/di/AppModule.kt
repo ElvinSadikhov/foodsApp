@@ -70,7 +70,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideLocaleService(@ApplicationContext context: Context, sharedPreferencesService: SharedPreferencesService): LocaleService {
-        return LocaleService(sharedPreferencesService, context.resources)
+        return LocaleService(sharedPreferencesService, context)
     }
 
     @Provides

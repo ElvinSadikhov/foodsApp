@@ -6,21 +6,19 @@ import com.example.foodsapp.data.enums.AppTheme
 import com.example.foodsapp.data.enums.LocaleType
 
 class SharedPreferencesService(private val sharedPreferences: SharedPreferences) {
-    private val defaultLocaleType = LocaleType.ENGLISH
-    private val defaultTheme = AppTheme.SYSTEM
 
-    fun getLocale(): LocaleType {
-        val localeCode = sharedPreferences.getString(SharedPreferencesConsts.localeKey, defaultLocaleType.code)
-        return LocaleType.values().find { it.code == localeCode } ?: defaultLocaleType
+    fun getLocale(): LocaleType? {
+        val localeCode = sharedPreferences.getString(SharedPreferencesConsts.localeKey, "--")
+        return if(localeCode == "--") null else LocaleType.values().find { it.code == localeCode }
     }
 
     fun setLocale(localeType: LocaleType) {
         sharedPreferences.edit().putString(SharedPreferencesConsts.localeKey, localeType.code).apply()
     }
 
-    fun getTheme(): AppTheme {
-        val themeMode = sharedPreferences.getInt(SharedPreferencesConsts.themeKey, defaultTheme.mode)
-        return AppTheme.values().find { it.mode == themeMode } ?: defaultTheme
+    fun getTheme(): AppTheme? {
+        val themeMode = sharedPreferences.getInt(SharedPreferencesConsts.themeKey, -100)
+        return if(themeMode == -100) null else AppTheme.values().find { it.mode == themeMode }
     }
 
     fun setTheme(theme: AppTheme) {

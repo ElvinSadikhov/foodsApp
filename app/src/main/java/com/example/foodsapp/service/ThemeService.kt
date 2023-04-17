@@ -7,7 +7,15 @@ import com.example.foodsapp.data.enums.AppTheme
 
 class ThemeService(private val sharedPreferencesService: SharedPreferencesService) {
 
-    fun getTheme(): AppTheme = sharedPreferencesService.getTheme()
+    private fun isThemeSelected(): Boolean = getTheme() != null
+
+    fun setDefaultIfNeeded() {
+        if(!isThemeSelected()) {
+            setTheme(AppTheme.SYSTEM)
+        }
+    }
+
+    fun getTheme(): AppTheme? = sharedPreferencesService.getTheme()
 
     fun setTheme(theme: AppTheme) {
         AppCompatDelegate.setDefaultNightMode(theme.mode)

@@ -1,12 +1,15 @@
 package com.example.foodsapp.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.foodsapp.consts.LogTags
+import android.transition.AutoTransition
+import android.transition.TransitionManager
+import com.example.foodsapp.MainActivity
+import com.example.foodsapp.R
+import com.example.foodsapp.data.enums.AppTheme
 import com.example.foodsapp.data.enums.LocaleType
 import com.example.foodsapp.databinding.FragmentProfileTabBinding
 import com.example.foodsapp.service.LocaleService
@@ -19,22 +22,50 @@ class ProfileTabFragment : Fragment() {
     private lateinit var binding: FragmentProfileTabBinding
     @Inject lateinit var localeService: LocaleService
     @Inject lateinit var themeService: ThemeService
+    private lateinit var localeTypeBtnIdPairs: List<Pair<LocaleType, Int>>
+    private lateinit var themeBtnIdPairs: List<Pair<AppTheme, Int>>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentProfileTabBinding.inflate(inflater, container, false)
-        binding.profileTabFragment = this
+        binding.apply {
+            localeTypeBtnIdPairs = listOf(Pair(LocaleType.ENGLISH, binding.englishRadioBtn.id), Pair(LocaleType.RUSSIAN, binding.russianRadioBtn.id), Pair(LocaleType.AZERBAIJANI, binding.azerbaijaniRadioBtn.id))
+            themeBtnIdPairs = listOf(Pair(AppTheme.LIGHT, binding.lightThemeRadioBtn.id), Pair(AppTheme.DARK, binding.darkThemeRadioBtn.id), Pair(AppTheme.SYSTEM, binding.systemThemeRadioBtn.id))
+            profileTabFragment = this@ProfileTabFragment
+            localeRadioGroup.check(localeTypeBtnIdPairs.find { it.first == localeService.getLocale() }!!.second)
+            themeRadioGroup.check(themeBtnIdPairs.find { it.first == themeService.getTheme() }!!.second)
+        }
         return binding.root
     }
 
-    fun onClick() {
-        TODO("implement")
-//        localeService.setLocaleType(LocaleType.ENGLISH)
-//        recreateFragment()
+    fun toggleExpandableView(button: View, expandable: View) {
+        val isCollapsed = expandable.visibility == View.GONE
+        TransitionManager.beginDelayedTransition(binding.expandableArea, AutoTransition())
+        expandable.visibility = if(isCollapsed) View.VISIBLE else View.GONE
+        button.animate().rotationBy(if(isCollapsed) -180F else 180F).start()
     }
 
-    private fun recreateFragment() {
-        parentFragmentManager.beginTransaction()
-            .detach(this).attach(this)
+    fun onLocaleChanged() {
+        localeService.setLocale(localeTypeBtnIdPairs.find { it.second == binding.localeRadioGroup.checkedRadioButtonId }!!.first)
+//        (activity as MainActivity).restartActivity()
+        (activity as MainActivity).recreate()
+//        reloadFragment()
+    }
+
+    fun onThemeChanged() {
+        themeService.setTheme(themeBtnIdPairs.find { it.second == binding.themeRadioGroup.checkedRadioButtonId }!!.first)
+    }
+
+    private fun reloadFragment() {
+        val currentFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.profileTabFragment)!!
+
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .detach(currentFragment)
+            .commit()
+
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .attach(currentFragment)
             .commit()
     }
 

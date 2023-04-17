@@ -24,6 +24,7 @@ class SignInFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
         binding.signInFragment = this
+        (activity as MainActivity).hideBottomNavBar()
         return binding.root
     }
 
