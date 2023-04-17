@@ -24,7 +24,8 @@ class CartViewModel @Inject constructor(private val cartRepo: CartRepo, private 
             if (success) {
                 val cartItems = cartRepo.loadCartItems(authService.getUserId()!!)
                 loadCartItems()
-                cartRepo.deleteFromCart(cartItems.stream()
+                cartRepo.deleteFromCart(cartItems
+                    .stream()
                     .filter {
                         it.orderAmount == 999
                     }.findFirst().get().cartId, authService.getUserId()!!)
@@ -35,7 +36,8 @@ class CartViewModel @Inject constructor(private val cartRepo: CartRepo, private 
     private fun loadCartItems() {
         CoroutineScope(Dispatchers.Main).launch {
             //! there is a huge problem with backend response, so I needed to do a work around
-            cartItemList.value = cartRepo.loadCartItems(authService.getUserId()!!).stream()
+            cartItemList.value = cartRepo.loadCartItems(authService.getUserId()!!)
+                .stream()
                 .filter {
                     it.orderAmount != 999
                 }.toList()

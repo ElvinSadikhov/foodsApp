@@ -70,17 +70,3 @@ inline fun <I, reified O> I.convert(): O {
     val json = gson.toJson(this)
     return gson.fromJson(json, object : TypeToken<O>() {}.type)
 }
-
-//class LoggingInterceptor : Interceptor {
-//    override fun intercept(chain: Interceptor.Chain): Response {
-//        val request = chain.request()
-//        val response = chain.proceed(request)
-//
-//        // Log the response body
-//        val responseBody = response.peekBody(Long.MAX_VALUE)
-//
-//        Log.d("LoggingInterceptor", "Response: ${responseBody.string()}")
-//
-//        return response
-//    }
-//}
