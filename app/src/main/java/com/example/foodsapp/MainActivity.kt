@@ -1,25 +1,17 @@
 package com.example.foodsapp
 
 import android.content.Context
-import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.util.Log
 import android.view.Menu
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.example.foodsapp.data.enums.AppTheme
-import com.example.foodsapp.data.enums.LocaleType
 import com.example.foodsapp.databinding.ActivityMainBinding
 import com.example.foodsapp.service.LocaleService
-import com.example.foodsapp.service.SharedPreferencesService
 import com.example.foodsapp.service.ThemeService
-import com.google.android.gms.common.internal.Constants
-import com.google.android.gms.common.internal.service.Common
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 import javax.inject.Inject
 
 
@@ -27,16 +19,20 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     @Inject lateinit var themeService: ThemeService
-    @Inject lateinit var localeService: LocaleService
+    private val localeService = LocaleService.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         themeService.setDefaultIfNeeded()
-        localeService.setDefaultIfNeeded()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setupBottomNavBar()
         setContentView(binding.root)
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        if (newBase == null)    return
+        super.attachBaseContext(localeService.setChosenLocale(newBase))
     }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
@@ -65,12 +61,6 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
-
-//    fun restartActivity() {
-//        val intent = intent
-//        finish()
-//        startActivity(intent)
-//    }
 
     fun showBottomNavBar() {
         binding.bottomNavBar.visibility = View.VISIBLE

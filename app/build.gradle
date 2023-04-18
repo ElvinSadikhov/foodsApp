@@ -23,7 +23,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", 'FIREBASE_AUTH_WEB_CLIENT_ID', apikeyProperties['FIREBASE_AUTH_WEB_CLIENT_ID'])
 
-        resConfigs "en", "ru", "az"
+        resConfigs ("en", "ru", "az")
     }
 
     buildTypes {

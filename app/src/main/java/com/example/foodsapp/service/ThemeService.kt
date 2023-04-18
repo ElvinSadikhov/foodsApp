@@ -1,11 +1,12 @@
 package com.example.foodsapp.service
 
+import android.content.Context
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.foodsapp.consts.LogTags
 import com.example.foodsapp.data.enums.AppTheme
 
-class ThemeService(private val sharedPreferencesService: SharedPreferencesService) {
+class ThemeService(private val context: Context) {
 
     private fun isThemeSelected(): Boolean = getTheme() != null
 
@@ -15,11 +16,11 @@ class ThemeService(private val sharedPreferencesService: SharedPreferencesServic
         }
     }
 
-    fun getTheme(): AppTheme? = sharedPreferencesService.getTheme()
+    fun getTheme(): AppTheme? = SharedPreferencesService.getTheme(context)
 
     fun setTheme(theme: AppTheme) {
         AppCompatDelegate.setDefaultNightMode(theme.mode)
-        sharedPreferencesService.setTheme(theme)
+        SharedPreferencesService.setTheme(context, theme)
         Log.d(LogTags.appTheme, theme.name)
     }
 }

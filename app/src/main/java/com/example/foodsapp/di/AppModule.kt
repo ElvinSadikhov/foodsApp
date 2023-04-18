@@ -69,21 +69,8 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideLocaleService(@ApplicationContext context: Context, sharedPreferencesService: SharedPreferencesService): LocaleService {
-        return LocaleService(sharedPreferencesService, context)
-    }
-
-    @Provides
-    @Singleton
-    fun provideSharedPreferencesService(@ApplicationContext context: Context): SharedPreferencesService {
-        val sharedPreferences = context.getSharedPreferences(SharedPreferencesConsts.name, Context.MODE_PRIVATE)
-        return SharedPreferencesService(sharedPreferences)
-    }
-
-    @Provides
-    @Singleton
-    fun provideThemeService(sharedPreferencesService: SharedPreferencesService): ThemeService {
-        return ThemeService(sharedPreferencesService)
+    fun provideThemeService(@ApplicationContext context: Context): ThemeService {
+        return ThemeService(context)
     }
 
 }
