@@ -76,20 +76,20 @@
                                 android:id="@+id/azerbaijaniRadioBtn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Azerbaijani" />
+                                android:text="@string/azerbaijani" />
 
                             <RadioButton
                                 android:id="@+id/russianRadioBtn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Russian" />
+                                android:text="@string/russian" />
 
                             <RadioButton
                                 android:id="@+id/englishRadioBtn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="false"
-                                android:text="English" />
+                                android:text="@string/english" />
 
                         </RadioGroup>
 
@@ -142,7 +142,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
-                        android:text="Theme"
+                        android:text="@string/theme"
                         android:textAppearance="?attr/textAppearanceHeadline6"
                         app:layout_constraintBottom_toTopOf="@+id/expandableThemeLayout"
                         app:layout_constraintStart_toStartOf="parent"
@@ -173,19 +173,19 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="false"
-                                android:text="Light" />
+                                android:text="@string/lightTheme" />
 
                             <RadioButton
                                 android:id="@+id/darkThemeRadioBtn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Dark" />
+                                android:text="@string/darkTheme" />
 
                             <RadioButton
                                 android:id="@+id/systemThemeRadioBtn"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="System" />
+                                android:text="@string/systemTheme" />
 
                         </RadioGroup>
                     </LinearLayout>

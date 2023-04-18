@@ -3,4 +3,18 @@
     <string name="app_name">FoodsApp</string>
     <string name="orderAmount">Кол-во: %s</string>
     <string name="language">Язык</string>
+    <string name="foods">Блюда</string>
+    <string name="azerbaijani">Азербайджанский</string>
+    <string name="english">Английский</string>
+    <string name="russian">Русский</string>
+    <string name="theme">Тема</string>
+    <string name="lightTheme">Светлая</string>
+    <string name="systemTheme">Системная</string>
+    <string name="darkTheme">Тёмная</string>
+    <string name="signInWithGoogle">Вход с помощью Google</string>
+    <string name="homeTabLabel">Главная</string>
+    <string name="cartTabLabel">Корзина</string>
+    <string name="profileTabLabel">Профиль</string>
+    <string name="addToCart">Добавить в корзину</string>
+    <string name="viewInCart">Перейти в корзину</string>
 </resources>

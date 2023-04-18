@@ -20,8 +20,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ProfileTabFragment : Fragment() {
     private lateinit var binding: FragmentProfileTabBinding
-    @Inject lateinit var themeService: ThemeService
-    private val localeService = LocaleService.getInstance()
     private lateinit var localeTypeBtnIdPairs: List<Pair<LocaleType, Int>>
     private lateinit var themeBtnIdPairs: List<Pair<AppTheme, Int>>
 
@@ -31,8 +29,8 @@ class ProfileTabFragment : Fragment() {
             localeTypeBtnIdPairs = listOf(Pair(LocaleType.ENGLISH, binding.englishRadioBtn.id), Pair(LocaleType.RUSSIAN, binding.russianRadioBtn.id), Pair(LocaleType.AZERBAIJANI, binding.azerbaijaniRadioBtn.id))
             themeBtnIdPairs = listOf(Pair(AppTheme.LIGHT, binding.lightThemeRadioBtn.id), Pair(AppTheme.DARK, binding.darkThemeRadioBtn.id), Pair(AppTheme.SYSTEM, binding.systemThemeRadioBtn.id))
             profileTabFragment = this@ProfileTabFragment
-            localeRadioGroup.check(localeTypeBtnIdPairs.find { it.first == localeService.getLocale(requireContext()) }!!.second)
-            themeRadioGroup.check(themeBtnIdPairs.find { it.first == themeService.getTheme() }!!.second)
+            localeRadioGroup.check(localeTypeBtnIdPairs.find { it.first == LocaleService.getLocale(requireContext()) }!!.second)
+            themeRadioGroup.check(themeBtnIdPairs.find { it.first == ThemeService.getTheme(requireContext()) }!!.second)
         }
         return binding.root
     }
@@ -45,26 +43,12 @@ class ProfileTabFragment : Fragment() {
     }
 
     fun onLocaleChanged() {
-        localeService.setLocale(requireContext(), localeTypeBtnIdPairs.find { it.second == binding.localeRadioGroup.checkedRadioButtonId }!!.first)
+        LocaleService.setLocale(requireContext(), localeTypeBtnIdPairs.find { it.second == binding.localeRadioGroup.checkedRadioButtonId }!!.first)
         (activity as MainActivity).recreate()
     }
 
     fun onThemeChanged() {
-        themeService.setTheme(themeBtnIdPairs.find { it.second == binding.themeRadioGroup.checkedRadioButtonId }!!.first)
-    }
-
-    private fun reloadFragment() {
-        val currentFragment = requireActivity().supportFragmentManager.findFragmentById(R.id.profileTabFragment)!!
-
-        requireActivity().supportFragmentManager
-            .beginTransaction()
-            .detach(currentFragment)
-            .commit()
-
-        requireActivity().supportFragmentManager
-            .beginTransaction()
-            .attach(currentFragment)
-            .commit()
+        ThemeService.setTheme(requireContext(), themeBtnIdPairs.find { it.second == binding.themeRadioGroup.checkedRadioButtonId }!!.first)
     }
 
 }

@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Foods"
+            android:text="@string/foods"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold|italic"

@@ -4,4 +4,18 @@
     <string name="priceInManats" translatable="false">%s \u20BC</string>
     <string name="orderAmount">Amount: %s</string>
     <string name="language">Language</string>
+    <string name="foods">Foods</string>
+    <string name="azerbaijani">Azerbaijani</string>
+    <string name="english">English</string>
+    <string name="russian">Russian</string>
+    <string name="theme">Theme</string>
+    <string name="lightTheme">Light</string>
+    <string name="systemTheme">System</string>
+    <string name="darkTheme">Dark</string>
+    <string name="signInWithGoogle">Sign in with google</string>
+    <string name="homeTabLabel">Home</string>
+    <string name="cartTabLabel">Cart</string>
+    <string name="profileTabLabel">Profile</string>
+    <string name="addToCart">Add to cart</string>
+    <string name="viewInCart">View in cart</string>
 </resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FoodsApp</string>
+    <string name="orderAmount">Miqdar: %s</string>
+    <string name="language">Dil</string>
+    <string name="foods">Təam</string>
+    <string name="azerbaijani">Azərbaycanca</string>
+    <string name="english">İnqliscə</string>
+    <string name="russian">Rusca</string>
+    <string name="theme">Mövzu</string>
+    <string name="lightTheme">Açıq</string>
+    <string name="systemTheme">Sistem</string>
+    <string name="darkTheme">Tünd</string>
+    <string name="signInWithGoogle">Google ilə daxil ol</string>
+    <string name="homeTabLabel">Ana səhifə</string>
+    <string name="cartTabLabel">Səbət</string>
+    <string name="profileTabLabel">Profil</string>
+    <string name="addToCart">Səbətə at</string>
+    <string name="viewInCart">Səbətə keç</string>
+</resources>

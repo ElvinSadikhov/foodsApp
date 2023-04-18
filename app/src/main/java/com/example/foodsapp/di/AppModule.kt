@@ -1,8 +1,5 @@
 package com.example.foodsapp.di
 
-import android.content.Context
-import android.preference.PreferenceManager
-import com.example.foodsapp.consts.SharedPreferencesConsts
 import com.example.foodsapp.service.AuthService
 import com.example.foodsapp.data.datasource.CartDatasource
 import com.example.foodsapp.data.datasource.FoodItemDatasource
@@ -11,13 +8,9 @@ import com.example.foodsapp.data.repo.FoodItemRepo
 import com.example.foodsapp.retrofit.ApiUtils
 import com.example.foodsapp.retrofit.dao.CartDAO
 import com.example.foodsapp.retrofit.dao.FoodItemDAO
-import com.example.foodsapp.service.LocaleService
-import com.example.foodsapp.service.SharedPreferencesService
-import com.example.foodsapp.service.ThemeService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -65,12 +58,6 @@ class AppModule {
     @Singleton
     fun provideAuthService(): AuthService {
         return AuthService()
-    }
-
-    @Provides
-    @Singleton
-    fun provideThemeService(@ApplicationContext context: Context): ThemeService {
-        return ThemeService(context)
     }
 
 }

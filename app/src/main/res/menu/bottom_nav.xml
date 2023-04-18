@@ -5,13 +5,13 @@
     <item
         android:id="@+id/homeTabFragment"
         android:icon="@drawable/home_icon"
-        android:title="Home" />
+        android:title="@string/homeTabLabel" />
     <item
         android:id="@+id/cartTabFragment"
         android:icon="@drawable/cart_icon"
-        android:title="Cart" />
+        android:title="@string/cartTabLabel" />
     <item
         android:id="@+id/profileTabFragment"
         android:icon="@drawable/profile_icon"
-        android:title="Profile" />
+        android:title="@string/profileTabLabel" />
 </menu>

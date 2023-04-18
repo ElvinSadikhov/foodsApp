@@ -6,21 +6,16 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.example.foodsapp.consts.LogTags
 import com.example.foodsapp.data.enums.AppTheme
 
-class ThemeService(private val context: Context) {
+class ThemeService private constructor() {
+    companion object {
+        fun setDefaultIfNeeded(context: Context) = setTheme(context, getTheme(context) ?: AppTheme.SYSTEM)
 
-    private fun isThemeSelected(): Boolean = getTheme() != null
+        fun getTheme(context: Context): AppTheme? = SharedPreferencesService.getTheme(context)
 
-    fun setDefaultIfNeeded() {
-        if(!isThemeSelected()) {
-            setTheme(AppTheme.SYSTEM)
+        fun setTheme(context: Context, theme: AppTheme) {
+            AppCompatDelegate.setDefaultNightMode(theme.mode)
+            SharedPreferencesService.setTheme(context, theme)
+            Log.d(LogTags.appTheme, theme.name)
         }
-    }
-
-    fun getTheme(): AppTheme? = SharedPreferencesService.getTheme(context)
-
-    fun setTheme(theme: AppTheme) {
-        AppCompatDelegate.setDefaultNightMode(theme.mode)
-        SharedPreferencesService.setTheme(context, theme)
-        Log.d(LogTags.appTheme, theme.name)
     }
 }
